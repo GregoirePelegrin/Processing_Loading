@@ -1,10 +1,18 @@
 float radiusCircle;
 float lenSegment;
+float primaryAngle;
+float secondaryAngle;
+int nbrSegments;
+boolean complete;
 
 void setup(){
   size(600, 600);
-  radiusCircle = 250;
+  radiusCircle = 70;
   lenSegment = 20;
+  primaryAngle = 0;
+  secondaryAngle = 0;
+  nbrSegments = 10;
+  complete = false;
 }
 
 void draw(){
@@ -13,12 +21,27 @@ void draw(){
   
   noFill();
   stroke(255);
+  strokeWeight(3);
+ 
+  rotate(primaryAngle);
   
-  line(-20, 0, 20, 0);
+  translate(0, -radiusCircle);
+  rotate(secondaryAngle);
+  line(-(lenSegment/2), 0, lenSegment/2, 0);
+  rotate(-secondaryAngle);
+  translate(0, radiusCircle);
+  secondaryAngle += PI/30;
+  if(secondaryAngle > PI){
+    secondaryAngle = 0;
+    complete = true;
+  }
   
-  rotate(PI/2);
-  
-  line(-20, 0, 20, 0);
-  
-  rotate(-PI/2);
+  for(int i=1; i<nbrSegments; i++){
+    rotate(2*PI/nbrSegments);
+    line(-(lenSegment/2), -radiusCircle, (lenSegment/2), -radiusCircle);
+  }
+  if(complete){
+    complete = false;
+    primaryAngle += 2*PI/nbrSegments;
+  }
 }
